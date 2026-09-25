@@ -1,0 +1,7 @@
+.env
+*.keystore
+*.jks
+local.properties
+node_modules/
+build/
+.gradle/

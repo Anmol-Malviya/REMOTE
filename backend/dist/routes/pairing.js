@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const pairing_controller_1 = require("../controllers/pairing.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.post('/create', pairing_controller_1.createSession);
+router.post('/join', pairing_controller_1.joinSession);
+router.post('/approve', pairing_controller_1.approveSession);
+router.post('/reject', pairing_controller_1.rejectSession);
+exports.default = router;
