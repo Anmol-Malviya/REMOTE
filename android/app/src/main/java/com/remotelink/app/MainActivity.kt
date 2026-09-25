@@ -21,9 +21,15 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                // Manual Dependency Injection for simplicity
-                val signalingClient = SignalingClient("wss://localhost:3000") // TODO: Inject from build config
+                val signalingClient = SignalingClient("wss://remote-xfam.onrender.com")
                 val tokenManager = TokenManager(this@MainActivity.applicationContext)
+                
+                // Initialize Retrofit API Service
+                val retrofit = retrofit2.Retrofit.Builder()
+                    .baseUrl("https://remote-xfam.onrender.com")
+                    .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+                    .build()
+                val apiService = retrofit.create(com.remotelink.app.data.remote.ApiService::class.java)
                 
                 // eglBase requires careful initialization in a real app, passing null here for structural placeholder
                 val webRTCService = WebRTCService(
@@ -33,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     onAddStream = { /* bind to UI */ }
                 )
                 
-                return MainViewModel(signalingClient, tokenManager, webRTCService) as T
+                return MainViewModel(signalingClient, tokenManager, webRTCService, apiService) as T
             }
         }
     }

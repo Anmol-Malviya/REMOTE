@@ -18,7 +18,8 @@ enum class AppState {
 class MainViewModel(
     private val signalingClient: SignalingClient,
     private val tokenManager: TokenManager,
-    private val webRTCService: WebRTCService
+    private val webRTCService: WebRTCService,
+    private val apiService: com.remotelink.app.data.remote.ApiService
 ) : ViewModel() {
 
     private val _appState = MutableStateFlow(AppState.IDLE)
